@@ -15,7 +15,6 @@ struct list_item {
 
 #define list_init(head) do { (head)->next_ = NULL; (head)->data_ = NULL; } while (0);
 #define list_first(head) (head->next_)
-#define list_data(item,type) ((type)(item->data_))
 
 #define list_new_item(data) ({\
   struct list_item *item = (struct list_item *)l_malloc(sizeof(struct list_item));\
@@ -74,4 +73,9 @@ struct list_item {
   }\
   if(todelete) l_free(todelete);\
 } while (0)
+
+#define list_next(item) (item->next_)
+
+#define list_data(item) (item->data_)
+
 #endif

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #define l_free myfree
 #define l_malloc mymalloc
 #include "../aux/list.h"

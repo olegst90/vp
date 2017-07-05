@@ -43,7 +43,7 @@ static int ram_byte_write(struct memdev *ctx, unsigned int offset, unsigned char
   return 1;
 }
 
-int ram_init(size_t len, struct memdev *ram)
+int ram_init(struct memdev *ram, size_t len)
 {
    if (!ram) {
      fprintf(stderr, "%s bad param\n", __FUNCTION__);
