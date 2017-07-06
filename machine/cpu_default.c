@@ -32,6 +32,9 @@ static int fetch_instruction(void *mem, int *len, int16_t *v1, int16_t *v2)
   }
 }
 
+//tmp
+#define IOSOC_BASE 0x1000
+
 static int cpu_default_cycle(struct cpu *p)
 {
   //printf("%s enter\n", __FUNCTION__);

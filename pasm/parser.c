@@ -45,7 +45,8 @@ static enum cpu_default_instruction parse_instruction(const char *str)
   else if (streq(str,"LDA")) return CPU_DEFAULT_LDA;
   else if (streq(str,"STA")) return CPU_DEFAULT_STA;
   else if (streq(str,"ADD")) return CPU_DEFAULT_ADD;
-
+  else if (streq(str,"JMP")) return CPU_DEFAULT_JMP;
+  else if (streq(str,"JMPF")) return CPU_DEFAULT_JMPF;
   else return CPU_DEFAULT_NONE;
 }
 
@@ -56,10 +57,10 @@ const char *token_to_str(struct token *t)
     case NEWLINE:
       strcpy(buff,"<newline>");
       break;
-    case LABEL:
-      sprintf(buff,"<label %s>",t->v.s);
+    case SYMBOL:
+      sprintf(buff,"<SYMBOL %s>",t->v.s);
       break;
-    case LABELREF:
+    case SYMREF:
       sprintf(buff,"<lref %s>",t->v.s);
       break;
     case INSTRUCTION:
@@ -121,10 +122,10 @@ static int parse_line(char *line, int num, struct list_item *tokens)
       parsed_token = (struct token *)calloc(1, sizeof(struct token));
       parsed_token->line = num;
       if (lastch(token_str) == TOKEN_LABEL) {
-        parsed_token->type = LABEL;
+        parsed_token->type = SYMBOL;
         strncpy(parsed_token->v.s, token_str, strlen(token_str) - 1);
       } else if (token_str[0] == TOKEN_LABELREF) {
-        parsed_token->type = LABELREF;
+        parsed_token->type = SYMREF;
         strcpy(parsed_token->v.s, token_str + 1);
       } else if (str_in_list(token_str, KW_DIRECTIVE)) {
         parsed_token->type = DIRECTIVE;

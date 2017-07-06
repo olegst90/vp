@@ -8,3 +8,7 @@ buff: .HEX xx"deadbeaf"
 
 start:
    LDA
+   JMPF @start
+   JMPF @end
+
+another: .STR "End"   

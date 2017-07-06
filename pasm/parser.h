@@ -10,8 +10,8 @@
 
 enum token_type {
   NEWLINE,
-  LABEL,
-  LABELREF,
+  SYMBOL,
+  SYMREF,
   INSTRUCTION,
   LITERAL,
   DIRECTIVE,

@@ -52,11 +52,11 @@ struct list_item {
 })
 
 #define list_remove(head, item) do {\
-  struct list_item *tmp;\
-  while (head->next_ != item && head->next_) head = head->next_;\
-  if (head->next_){\
-    tmp = head->next_;\
-    head->next_ = head->next_->next_;\
+  struct list_item *tmp, *p = head;\
+  while (p->next_ != (item) && p->next_) p = p->next_;\
+  if (p->next_){\
+    tmp = p->next_;\
+    p->next_ = p->next_->next_;\
     l_free(tmp->data_);\
     l_free(tmp);\
   }\
@@ -72,10 +72,20 @@ struct list_item {
     p = p->next_;\
   }\
   if(todelete) l_free(todelete);\
+  (head)->next_ = NULL;\
 } while (0)
 
-#define list_next(item) (item->next_)
+#define list_next(item) ((item)->next_)
 
-#define list_data(item) (item->data_)
+#define list_data(item) ((item)->data_)
 
+#define list_len(head) ({\
+  int len = 0;\
+  struct list_item *p = (head);\
+  while(p->next_) {\
+    len++;\
+    p = p->next_;\
+  }\
+  len;\
+})
 #endif

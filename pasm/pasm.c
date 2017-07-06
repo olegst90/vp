@@ -51,16 +51,20 @@ int main(int argc, char **argv)
   }
 
   struct interbin ibin;
-  build_interbin(&tokens, &ibin);
-
+  if (0 != build_interbin(&tokens, &ibin)) {
+    fprintf(stderr,"Could not build code\n");
+    goto cleanup;
+  }
+  //dump_symbol((struct symbol *)ibin.sym.next_->data_);
+  if (0 != build_pobj(outpath, ibin.bin, ibin.binsize, &ibin.sym, &ibin.symref)) {
+    fprintf(stderr,"Could not build pobj\n");
+    goto cleanup;
+  }
+  res = 0;
 cleanup:
   list_clear(&tokens);
-  free(ibin.bin);
+  if(ibin.bin) free(ibin.bin);
   list_clear(&ibin.sym);
   list_clear(&ibin.symref);
-  //list_clear(&out.sym);
-  //list_clear(&out.symref);
-  //if (infile) fclose(infile);
-  //if (outfile) fclose(outfile);
   return res;
 }

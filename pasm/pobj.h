@@ -2,12 +2,15 @@
 #define POBJ_H
 
 #include <stdint.h>
+#include <list.h>
 
 #define MAX_SYM_LEN 64
 
 enum symbol_type {
-  SYMBOL_DEFALT, SYMBOL_NONE
+  SYMBOL_DEFAULT, SYMBOL_EXPORTED, SYMBOL_NONE
 };
+
+#define SYMBOL_OFFSET_NONE ((uint32_t)-1U)
 
 struct symbol {
   char name[MAX_SYM_LEN];
@@ -35,5 +38,10 @@ struct pobj_header {
   uint32_t ref_section;
   uint32_t ref_section_len;
 };
+
+void dump_header(struct pobj_header *header);
+void dump_symbol(struct symbol *sym);
+
+int build_pobj(const char *path, uint8_t *bin, uint32_t bin_len, struct list_item *sym, struct list_item *symref);
 
 #endif // POBJ_H
