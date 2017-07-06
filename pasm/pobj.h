@@ -25,7 +25,7 @@ struct symref {
   uint32_t type;
 };
 
-#define MAX_BIN_SZ 0x1000
+#define MAX_BIN_LEN 0x1000
 
 struct pobj_header {
   uint32_t bin_section;

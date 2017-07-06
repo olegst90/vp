@@ -1,5 +1,5 @@
-#ifndef BUILDER_H
-#define BUILDER_H
+#ifndef GENERATOR_H
+#define GENERATOR_H
 
 #include <list.h>
 #include <stdlib.h>
@@ -15,4 +15,4 @@ struct interbin {
 
 int build_interbin(struct list_item *tokens, struct interbin *bin);
 
-#endif //BUILDER_H
+#endif //GENERATOR_H

@@ -19,4 +19,4 @@ clean:
 	rm -f *.o
 	rm -rf $(ROOT_DIR)/bin/test_* \
 	       $(ROOT_DIR)/bin/test_input \
-				 $(ROOT_DIR)/bin/test_output \
+				 $(ROOT_DIR)/bin/test_output

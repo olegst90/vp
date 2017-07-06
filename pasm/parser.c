@@ -28,10 +28,10 @@ static enum literal_type parse_literal(const char *str, union multival *v)
     } else if (1 == sscanf(str,"xx\"%[0-9A-Fa-f]\"", v->s)
                 && 0 == strlen(v->s) % 2) {
       return HEX;
-    } else if ((val_int = strtol(str, &endp, 0) || endp != str)  &&  endp ==  str + strlen(str)) {
+    } else if (( (val_int = strtol(str, &endp, 0)) || endp != str)  &&  *endp == '\0') {
       v->i = (int)val_int;
       return INT;
-    } else if( (0.0 != (val_double = strtod(str, &endp)) || (endp != str)) && endp == str+strlen(str) ) {
+    } else if( (0.0 != (val_double = strtod(str, &endp)) || (endp != str)) && *endp == '\0' ) {
       v->f = (float)val_double;
       return FLOAT;
     }
@@ -90,7 +90,7 @@ const char *token_to_str(struct token *t)
            sprintf(buff,"<lit.f %f>", t->v.f);
            break;
          case INT:
-           sprintf(buff,"<lit.i %d/%x>", t->v.i, t->v.i);
+           sprintf(buff,"<lit.i %d/%#x>", t->v.i, t->v.i);
            break;
          }; break;
     case DIRECTIVE:
@@ -103,7 +103,7 @@ const char *token_to_str(struct token *t)
 static const char *KW_DIRECTIVE[] = {".GLOBAL", ".HEX",".STR",".BYTE",".WORD",NULL};
 static const char *KW_INSTRUCTION[] = {"NOP", "LDA","STA","ADD","DIV","SUB","MUL","TEST","JMP","JMPF","JMPR", NULL};
 
-static int parse_line(char *line, struct list_item *tokens)
+static int parse_line(char *line, int num, struct list_item *tokens)
 {
   char *token_str;
   struct token *parsed_token = NULL;
@@ -119,6 +119,7 @@ static int parse_line(char *line, struct list_item *tokens)
   token_str = strtok(line, DELIMS);
   while(token_str) {
       parsed_token = (struct token *)calloc(1, sizeof(struct token));
+      parsed_token->line = num;
       if (lastch(token_str) == TOKEN_LABEL) {
         parsed_token->type = LABEL;
         strncpy(parsed_token->v.s, token_str, strlen(token_str) - 1);
@@ -162,7 +163,7 @@ int parse_text(const char *text, int text_len, struct list_item *tokens)
       if (*p == '\n') {
          memcpy(line, prev, p - prev);
          line[p - prev] = '\0';
-         if (0 != parse_line(line, tokens)) {
+         if (0 != parse_line(line, line_num, tokens)) {
            fprintf(stderr, "Error on line %d\n", line_num);
            return -1;
          }

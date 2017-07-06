@@ -33,6 +33,7 @@ struct token {
   enum token_type type;
   int subtype;
   union multival v;
+  int line;
 };
 
 #define MAX_LINE_LEN 1024

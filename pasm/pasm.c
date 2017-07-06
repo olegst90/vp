@@ -7,7 +7,7 @@
 #include <strhelper.h>
 #include "parser.h"
 #include "pobj.h"
-
+#include "generator.h"
 
 void usage()
 {
@@ -50,8 +50,14 @@ int main(int argc, char **argv)
     if (t->type == NEWLINE) printf("\n");
   }
 
+  struct interbin ibin;
+  build_interbin(&tokens, &ibin);
+
 cleanup:
   list_clear(&tokens);
+  free(ibin.bin);
+  list_clear(&ibin.sym);
+  list_clear(&ibin.symref);
   //list_clear(&out.sym);
   //list_clear(&out.symref);
   //if (infile) fclose(infile);
