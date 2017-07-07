@@ -39,6 +39,15 @@ static enum literal_type parse_literal(const char *str, union multival *v)
     else return NONE;
 }
 
+static bool is_id(const char *str) {
+  if (strlen(str) == 0) return false;
+  if (!isalpha(str[0])) return false;
+  for (int i = 1; i < strlen(str); i++) {
+    if (!isalnum(str[i])) return false;
+  }
+  return true;
+}
+
 static enum cpu_default_instruction parse_instruction(const char *str)
 {
   if(streq(str,"NOP")) return CPU_DEFAULT_NOP;
